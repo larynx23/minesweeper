@@ -1,0 +1,11 @@
+obj/
+*.o
+
+bin/
+minesweeper
+
+data/
+
+.vscode/
+.idea/
+.DS_Store
