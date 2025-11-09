@@ -33,7 +33,6 @@ void start_game(Options options) {
     ch = getch();
 #ifdef _WIN32
     if (ch == 224) {
-      printf("hello");
       int key = getch();
       switch (key) {
         case 72:
@@ -50,22 +49,6 @@ void start_game(Options options) {
           break;
       }
       cursor.tile = &board->tiles[cursor.y][cursor.x];
-    } else {
-      switch (ch) {
-        case 'q':
-          running = false;
-          break;
-        case '1':
-          if (is_first) {
-            is_first = false;
-            fill_board(board, (int[2]){cursor.x, cursor.y});
-          }
-          reveal(cursor.tile, &board->remaining_tiles);
-          break;
-        case '2':
-          flag(cursor.tile, &board->flagged_tiles);
-          break;
-      }
     }
 #else
     if (ch == '\033') {
@@ -85,7 +68,9 @@ void start_game(Options options) {
           break;
       }
       cursor.tile = &board->tiles[cursor.y][cursor.x];
-    } else {
+    }
+#endif
+    else {
       switch (ch) {
         case 'q':
           running = false;
@@ -102,7 +87,6 @@ void start_game(Options options) {
           break;
       }
     }
-#endif
   } while (running);
   printf("\npress any key to quit...\n");
   destroy_board(board);
