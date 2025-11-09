@@ -29,11 +29,6 @@ run: $(BIN) | data
 	./$(BIN)
 
 clean:
-ifeq ($(OS),Windows_NT)
-	-@del /Q obj\*.o 2>nul || -@rmdir /S /Q obj 2>nul
-	-@del /Q bin\*$(EXE) 2>nul || -@rmdir /S /Q bin 2>nul
-else
 	rm -rf obj bin
-endif
 
 .PHONY: run clean
