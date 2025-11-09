@@ -1,8 +1,14 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -I include
-SRC = src/main.c src/Board.c src/Tile.c src/Menu.c src/Display.c src/Timer.c src/File.c
+
+EXE :=
+ifeq ($(OS),Windows_NT)
+  EXE = .exe
+endif
+
+SRC = src/main.c src/Board.c src/Tile.c src/Menu.c src/Display.c src/Timer.c
 OBJ = $(patsubst src/%.c,obj/%.o,$(SRC))
-BIN = bin/minesweeper
+BIN = bin/minesweeper$(EXE)
 
 $(BIN): $(OBJ) | bin
 	$(CC) -o $@ $^
@@ -23,6 +29,11 @@ run: $(BIN) | data
 	./$(BIN)
 
 clean:
+ifeq ($(OS),Windows_NT)
+	-@del /Q obj\*.o 2>nul || -@rmdir /S /Q obj 2>nul
+	-@del /Q bin\*$(EXE) 2>nul || -@rmdir /S /Q bin 2>nul
+else
 	rm -rf obj bin
+endif
 
 .PHONY: run clean

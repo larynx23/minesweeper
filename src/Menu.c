@@ -21,18 +21,19 @@ Options menu() {
         printf("  %s\n", options[i]);
       }
     }
-    char c = getch();
-    if (c == '\033') {
-      getch();
-      switch (getch()) {
-        case 'A':
+    int ch = getch();
+    #ifdef _WIN32
+    if (ch == 224) {
+      int key = getch();
+      switch (key) {
+        case 72:
           selected = (selected == 0) ? 4 : selected - 1;
           break;
-        case 'B':
+        case 80:
           selected = (selected == 4) ? 0 : selected + 1;
           break;
       }
-    } else if (c == '\n' || c == '\r') {
+    } else if (ch == '\n' || ch == '\r') {
       if (selected == 4)
         exit(0);
       option.difficulty = (Difficulty)selected;
@@ -59,5 +60,44 @@ Options menu() {
       printf(RESTOREPOS);
       return option;
     }
+    #else
+    if (ch == '\033') {
+      getch();
+      switch (getch()) {
+        case 'A':
+          selected = (selected == 0) ? 4 : selected - 1;
+          break;
+        case 'B':
+          selected = (selected == 4) ? 0 : selected + 1;
+          break;
+      }
+    } else if (ch == '\n' || ch == '\r') {
+      if (selected == 4)
+        exit(0);
+      option.difficulty = (Difficulty)selected;
+      if (selected == 0) {
+        option.N = 9;
+        option.M = 9;
+        option.mine_count = 10;
+      } else if (selected == 1) {
+        option.N = 16;
+        option.M = 16;
+        option.mine_count = 40;
+      } else if (selected == 2) {
+        option.N = 16;
+        option.M = 30;
+        option.mine_count = 99;
+      } else {
+        printf("Enter rows (N): ");
+        scanf("%d", &option.N);
+        printf("Enter columns (M): ");
+        scanf("%d", &option.M);
+        printf("Enter mine count: ");
+        scanf("%d", &option.mine_count);
+      }
+      printf(RESTOREPOS);
+      return option;
+    }
+    #endif
   }
 }

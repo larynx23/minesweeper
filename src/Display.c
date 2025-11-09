@@ -1,15 +1,7 @@
 #include <stdio.h>
 
-#ifdef _WIN32
-#include <conio.h>
-#else
-#include <termios.h>
-#include <unistd.h>
-#endif
-
 #include "../include/Display.h"
 
-const int fgcolors[] = {-1, 96, 32, 91, 34, 31, 36, 30, 92, -1};
 // 1: bright blue fg
 // 2: green fg
 // 3: red fg
@@ -18,11 +10,10 @@ const int fgcolors[] = {-1, 96, 32, 91, 34, 31, 36, 30, 92, -1};
 // 6: cyan fg
 // 7: black fg
 // 8: bright green fg
+const int fgcolors[] = {-1, 96, 32, 91, 34, 31, 36, 30, 92, -1};
 
+#ifndef _WIN32
 char getch() {
-#ifdef _WIN32
-  return _getch();
-#else
   struct termios oldattr, newattr;
   char ch;
 
@@ -41,8 +32,8 @@ char getch() {
   tcsetattr(STDIN_FILENO, TCSANOW, &oldattr);
 
   return ch;
-#endif
 }
+#endif
 
 void color_printf(char* text, int color1, int color2) {
   if (color1 >= 0 && color2 >= 0) {

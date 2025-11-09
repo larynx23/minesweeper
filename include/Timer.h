@@ -9,6 +9,6 @@ typedef struct {
   int time;  // in second
 } Record;
 
-char* time_to_string(int time);
+// char* time_to_string(int time);
 
 #endif
