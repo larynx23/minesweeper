@@ -1,10 +1,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "../include/Board.h"
 #include "../include/Cursor.h"
 #include "../include/Display.h"
+#include "../include/File.h"
 #include "../include/Menu.h"
 #include "../include/Tile.h"
 #include "../include/debugmalloc.h"
@@ -16,17 +18,35 @@ void start_game(Options options) {
 
   bool is_first = true;
   int ch;
+  time_t start_time, end_time;
+  time(&start_time);
   print_controls();
   printf(SAVEPOS);
   do {
     running = !draw_board(board, cursor);
+
     if (!running) {
       printf("YOU LOST");
       continue;
     }
     if (board->remaining_tiles == board->options.mine_count) {
       running = false;
+      time(&end_time);
+      int result = (int)(end_time - start_time);
       color_printf("YOU WON", MINE, NO_COLOR);
+      printf("\nYour time is: ");
+      print_formatted_time(result);
+      if (board->options.difficulty == Custom) {
+        printf("Your time wont be saved in custom mode.");
+      } else {
+        Record current;
+        printf("Whats your name? : ");
+        scanf("%20s", current.name);
+        current.time = result;
+        current.difficulty = board->options.difficulty;
+        append_toplist("data/highscore.csv", current);
+      }
+      continue;
     }
 
     ch = getch();
@@ -87,11 +107,14 @@ void start_game(Options options) {
       }
     }
   } while (running);
-  printf("\npress any key to quit...\n");
   destroy_board(board);
+  printf("\npress any key to quit...\n");
   getch();
 }
 
 int main() {
-  start_game(menu());
+  while (1)
+  {
+    start_game(menu());
+  }
 }

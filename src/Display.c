@@ -58,5 +58,5 @@ void print_controls(void) {
 }
 
 void print_formatted_time(int time) {
-  printf("%20d:%20d", time / 60, time % 60);
+  printf("%02d:%02d\n", time / 60, time % 60);
 }

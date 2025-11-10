@@ -86,31 +86,38 @@ void destroy_board(Board* board) {
 }
 
 bool draw_board(Board* board, Cursor cursor) {
-  bool is_mine_revealed = false;
+  Tile *tile_under_cursor = &board->tiles[cursor.y][cursor.x];
+  bool is_mine_revealed = tile_under_cursor->value == 9 && tile_under_cursor->is_revealed;
+
   printf(RESTOREPOS);
   printf("Remaining mines: %02d\n", board->options.mine_count - board->flagged_tiles);
   for (int i = 0; i < board->options.N; i++) {
     for (int j = 0; j < board->options.M; j++) {
       char out[] = "  ";
       int bg = NO_COLOR, fg = NO_COLOR;
+      Tile current_tile = board->tiles[i][j];
 
-      if (board->tiles[i][j].is_revealed) {
-        out[0] = '0' + board->tiles[i][j].value;
-        fg = fgcolors[board->tiles[i][j].value];
+      if (!current_tile.is_revealed) {
+        if (is_mine_revealed && current_tile.value == 9) {
+          out[0] = 'X';
+          bg = MINE;
+        } else {
+          out[0] = '#';
+          bg = UNREVEALED;
+          fg = NO_COLOR;
+        }
+      } else {
+        out[0] = '0' + current_tile.value;
+        fg = fgcolors[current_tile.value];
 
-        if (board->tiles[i][j].value == 0) {
+        if (current_tile.value == 0) {
           out[0] = '.';
         }
 
-        if (board->tiles[i][j].value == 9) {
+        if (current_tile.value == 9) {
           out[0] = 'X';
           bg = MINE;
-          is_mine_revealed = true;
         }
-      } else {
-        out[0] = '#';
-        bg = UNREVEALED;
-        fg = NO_COLOR;
       }
 
       if (i == cursor.y && j == cursor.x)
