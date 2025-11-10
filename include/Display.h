@@ -27,5 +27,6 @@ char getch();
 #endif
 void color_printf(char* text, int color1, int color2);
 void print_controls(void);
+void print_formatted_time(int time);
 
 #endif
