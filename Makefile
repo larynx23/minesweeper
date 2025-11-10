@@ -6,7 +6,7 @@ ifeq ($(OS),Windows_NT)
   EXE = .exe
 endif
 
-SRC = src/main.c src/Board.c src/Tile.c src/Menu.c src/Display.c src/Timer.c
+SRC = src/main.c src/Board.c src/Tile.c src/Menu.c src/Display.c src/File.c
 OBJ = $(patsubst src/%.c,obj/%.o,$(SRC))
 BIN = bin/minesweeper$(EXE)
 

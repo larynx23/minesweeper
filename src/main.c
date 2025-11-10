@@ -7,7 +7,6 @@
 #include "../include/Display.h"
 #include "../include/Menu.h"
 #include "../include/Tile.h"
-#include "../include/Timer.h"
 #include "../include/debugmalloc.h"
 
 void start_game(Options options) {
