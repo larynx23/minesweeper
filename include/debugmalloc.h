@@ -63,7 +63,7 @@ typedef struct DebugmallocEntry {
 /* debugmalloc singleton, storing all state */
 typedef struct DebugmallocData {
     char logfile[256];    /* log file name or empty string */
-    long max_block_size;  /* max size of a single block allocated */
+    size_t max_block_size;  /* max size of a single block allocated */
     long alloc_count;     /* currently allocated; decreased with free */
     long long alloc_bytes;
     long all_alloc_count; /* all allocations, never decreased */
