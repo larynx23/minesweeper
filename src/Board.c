@@ -98,6 +98,7 @@ bool draw_board(Board* board, Cursor cursor) {
       Tile current_tile = board->tiles[i][j];
 
       if (!current_tile.is_revealed) {
+
         if (is_mine_revealed && current_tile.value == 9) {
           out[0] = 'X';
           bg = MINE;

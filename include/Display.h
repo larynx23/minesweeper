@@ -13,6 +13,7 @@
 #define SAVEPOS "\0337"
 #define RESTOREPOS "\0338"
 #define DELLINE "\033[2K"
+#define MOVEUP "\033[1A"
 
 #define USER 107        // white bg
 #define MINE 41         // red bg
@@ -28,5 +29,6 @@ char getch();
 void color_printf(char* text, int color1, int color2);
 void print_controls(void);
 void print_formatted_time(int time);
+void clear_lines_above(int n);
 
 #endif

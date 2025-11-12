@@ -20,6 +20,7 @@ void start_game(Options options) {
   int ch;
   time_t start_time, end_time;
   time(&start_time);
+  printf(RESTOREPOS);
   print_controls();
   printf(SAVEPOS);
   do {
@@ -107,14 +108,18 @@ void start_game(Options options) {
       }
     }
   } while (running);
+  int height = board->options.M;
   destroy_board(board);
   printf("\npress any key to quit...\n");
   getch();
+  clear_lines_above(height + 10); // 10 is the Controls height
 }
 
 int main() {
-  while (1)
-  {
+  while (1) {
+    printf(SAVEPOS);
     start_game(menu());
+    printf(RESTOREPOS);
+    printf("\033[7A");
   }
 }

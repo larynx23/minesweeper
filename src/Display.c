@@ -1,6 +1,6 @@
-#include <stdio.h>
-
 #include "../include/Display.h"
+
+#include <stdio.h>
 
 // 1: bright blue fg
 // 2: green fg
@@ -48,15 +48,20 @@ void color_printf(char* text, int color1, int color2) {
 }
 
 void print_controls(void) {
-  printf("\n%s", DELLINE);
-  printf("Controls:\n");
+  printf("\nControls:\n");
   printf("  Arrow keys  : Move cursor\n");
   printf("  1           : Reveal tile\n");
   printf("  2           : Toggle flag\n");
-  printf("  q           : Quit\n");
-  printf("%s\n", DELLINE);
+  printf("  q           : Quit\n\n");
 }
 
 void print_formatted_time(int time) {
   printf("%02d:%02d\n", time / 60, time % 60);
+}
+
+void clear_lines_above(int n) {
+  for (int i = 0; i < n; i++) {
+    printf(DELLINE);
+    printf(MOVEUP);
+  }
 }

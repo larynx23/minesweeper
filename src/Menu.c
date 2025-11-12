@@ -8,7 +8,6 @@ Options menu() {
   char* options[] = {"Easy", "Normal", "Hard", "Custom", "Quit"};
   int selected = 0;
   Options option;
-  printf(SAVEPOS);
   while (1) {
     printf(RESTOREPOS);
     printf("\nMenu:\n\n");
@@ -71,7 +70,8 @@ Options menu() {
         printf("Enter mine count: ");
         scanf("%d", &option.mine_count);
       }
-      printf(RESTOREPOS);
+      int menu_height = 8;
+      clear_lines_above(menu_height);
       return option;
     }
   }
