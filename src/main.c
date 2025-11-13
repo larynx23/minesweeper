@@ -17,6 +17,7 @@ void start_game(Options options) {
   Cursor cursor = {.x = 0, .y = 0, .tile = &board->tiles[0][0]};
 
   bool is_first = true;
+  bool won = false;
   int ch;
   time_t start_time, end_time;
   time(&start_time);
@@ -32,13 +33,14 @@ void start_game(Options options) {
     }
     if (board->remaining_tiles == board->options.mine_count) {
       running = false;
+      won = true;
       time(&end_time);
       int result = (int)(end_time - start_time);
       color_printf("YOU WON", MINE, NO_COLOR);
       printf("\nYour time is: ");
       print_formatted_time(result);
       if (board->options.difficulty == Custom) {
-        printf("Your time wont be saved in custom mode.");
+        printf("Your time wont be saved in custom mode.\n");
       } else {
         Record current;
         printf("Whats your name? : ");
@@ -112,14 +114,12 @@ void start_game(Options options) {
   destroy_board(board);
   printf("\npress any key to quit...\n");
   getch();
-  clear_lines_above(height + 10); // 10 is the Controls height
+  clear_lines_above(height + 10 + (won ? 3 : 0)); // 10 is the Controls height, +3 if won
 }
 
 int main() {
   while (1) {
     printf(SAVEPOS);
     start_game(menu());
-    printf(RESTOREPOS);
-    printf("\033[7A");
   }
 }

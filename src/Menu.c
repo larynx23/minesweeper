@@ -10,7 +10,7 @@ Options menu() {
   Options option;
   while (1) {
     printf(RESTOREPOS);
-    printf("\nMenu:\n\n");
+    printf("<------>\nMenu:\n\n");
     for (int i = 0; i < 5; i++) {
       if (i == selected) {
         color_printf("> ", 30, USER);
@@ -63,12 +63,44 @@ Options menu() {
         option.M = 30;
         option.mine_count = 99;
       } else {
-        printf("Enter rows (N): ");
-        scanf("%d", &option.N);
-        printf("Enter columns (M): ");
-        scanf("%d", &option.M);
-        printf("Enter mine count: ");
-        scanf("%d", &option.mine_count);
+        bool valid;
+        do {
+          valid = true; 
+          printf("Enter rows (N): ");
+          scanf("%d", &option.N);
+          clear_lines_above(1);
+          printf("Enter columns (M): ");
+          scanf("%d", &option.M);
+          clear_lines_above(1);
+          printf("Enter mine count: ");
+          scanf("%d", &option.mine_count);
+          clear_lines_above(1);
+
+          double density = ((double)option.mine_count / (double)(option.N * option.M));
+          if (option.M > 40 || option.N > 40 || option.M < 10 || option.N < 10 ) {
+            valid = false;
+            printf("Board sizes must be between 10 and 40!\npress anything to retry\n");
+            getch();
+            getch();
+            clear_lines_above(2);
+          } else if (density > 1.0) {
+            valid = false;
+            printf("Your density is over 100%% (%.2f%%)\npress anything to retry\n", density * 100);
+            getch();
+            getch();
+            clear_lines_above(2);
+          } else if (density > 0.20) {
+            char answer;
+            do {
+              printf("Your density is over 20%% (%.2f%%), are you sure? (y/n)\n", density * 100);
+              scanf(" %c", &answer);
+              clear_lines_above(2);
+            } while (answer != 'y' && answer != 'Y' && answer != 'n' && answer != 'N');
+            if (answer == 'n' || answer == 'N') {
+              valid = false;
+            }
+          } 
+        } while (!valid);
       }
       int menu_height = 8;
       clear_lines_above(menu_height);
