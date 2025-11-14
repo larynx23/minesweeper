@@ -16,5 +16,6 @@ typedef struct {
 } Options;
 
 Options menu();
+void toplist_menu();
 
 #endif

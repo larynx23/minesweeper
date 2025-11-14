@@ -26,6 +26,7 @@ data:
 	mkdir -p data
 
 run: $(BIN) | data
+	@if [ "$(CLEAR)" = "1" ]; then clear; fi
 	./$(BIN)
 
 clean:

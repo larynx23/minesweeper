@@ -46,6 +46,7 @@ void start_game(Options options) {
         printf("Whats your name? : ");
         scanf("%20s", current.name);
         current.time = result;
+        getch();
         current.difficulty = board->options.difficulty;
         append_toplist("data/highscore.csv", current);
       }
@@ -114,7 +115,7 @@ void start_game(Options options) {
   destroy_board(board);
   printf("\npress any key to quit...\n");
   getch();
-  clear_lines_above(height + 10 + (won ? 3 : 0)); // 10 is the Controls height, +3 if won
+  clear_lines_above(height + 10 + (won ? 3 : 0));  // 10 is the Controls height, +3 if won
 }
 
 int main() {

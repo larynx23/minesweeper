@@ -9,53 +9,60 @@ Record* read_file_to_toplist(char* filename, Difficulty difficulty, int* count) 
   char* line = NULL;
   size_t line_len = 0;
   int toplist_len = 0;
-  Record* toplist = NULL;
+  int capacity = 10;
+  Record* toplist = (Record*)malloc(sizeof(Record) * capacity);
 
-  if (file != NULL) {
-    while ((getline(&line, &line_len, file)) != -1) {
-      Record record;
+  if (file == NULL) {
+    *count = 0;
+    return toplist;
+  }
 
-      char* difficulty_str = strtok(line, ";");
-      char* name_str = strtok(NULL, ";");
-      char* time_str = strtok(NULL, ";\n");
+  while ((getline(&line, &line_len, file)) != -1) {
+    Record record;
 
-      if (difficulty_str && name_str && time_str) {
-        if (strcmp(difficulty_str, "easy") == 0) {
-          record.difficulty = Easy;
-        } else if (strcmp(difficulty_str, "normal") == 0) {
-          record.difficulty = Normal;
-        } else if (strcmp(difficulty_str, "hard") == 0) {
-          record.difficulty = Hard;
-        }
+    char* difficulty_str = strtok(line, ";");
+    char* name_str = strtok(NULL, ";");
+    char* time_str = strtok(NULL, ";\n");
 
-        if (record.difficulty != difficulty) {
-          continue;
-        }
+    if (difficulty_str && name_str && time_str) {
+      if (strcmp(difficulty_str, "easy") == 0) {
+        record.difficulty = Easy;
+      } else if (strcmp(difficulty_str, "normal") == 0) {
+        record.difficulty = Normal;
+      } else if (strcmp(difficulty_str, "hard") == 0) {
+        record.difficulty = Hard;
+      }
 
-        strncpy(record.name, name_str, 20);
-        record.name[20] = '\0';
-        record.time = atoi(time_str);
+      if (record.difficulty != difficulty) {
+        continue;
+      }
 
-        Record* temp = (Record*)realloc(toplist, sizeof(Record) * (toplist_len + 1));
+      if (toplist_len >= capacity) {
+        capacity *= 2;
+        Record* temp = (Record*)realloc(toplist, sizeof(Record) * capacity);
         if (temp == NULL) {
           free(toplist);
           free(line);
           fclose(file);
+          *count = 0;
           return NULL;
         }
         toplist = temp;
-        toplist[toplist_len] = record;
-        toplist_len++;
       }
+
+      strncpy(record.name, name_str, 20);
+      record.name[20] = '\0';
+      record.time = atoi(time_str);
+
+      toplist[toplist_len++] = record;
     }
-    free(line);
-    fclose(file);
-  } else {
-    return NULL;
   }
+  free(line);
+  fclose(file);
   *count = toplist_len;
   return toplist;
 }
+
 void append_toplist(char* filename, Record record) {
   FILE* file = fopen(filename, "a");
   if (file != NULL) {
@@ -71,4 +78,13 @@ void append_toplist(char* filename, Record record) {
     fprintf(file, "%s;%s;%d\n", difficulty_str, record.name, record.time);
     fclose(file);
   }
+}
+
+int compare_records(const void* record1, const void* record2) {
+  Record* r1 = (Record*)record1;
+  Record* r2 = (Record*)record2;
+
+  if (r1->time < r2->time) return -1;
+  if (r1->time > r2->time) return 1;
+  return 0;
 }
