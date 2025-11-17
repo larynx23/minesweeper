@@ -3,6 +3,7 @@
 
 #include "Tile.h"
 
+// jelenlegi helyzetet tároló struktúra, a jelenlegi mezővel együtt
 typedef struct {
   int x, y;
   Tile* tile;
