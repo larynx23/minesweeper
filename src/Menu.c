@@ -12,7 +12,7 @@ Options menu() {
   Options option;
   while (1) {
     printf(RESTOREPOS);
-    printf("<------>\nMenu:\n\n");
+    printf("<---------------->\nMenu:\n\n");
     for (int i = 0; i < options_len; i++) {
       if (i == selected) {
         color_printf("> ", 30, USER);
@@ -120,7 +120,7 @@ void toplist_menu() {
   int selected = 0;
   while (1) {
     printf(RESTOREPOS);
-    printf("<------>\nToplist:\n\n");
+    printf("<---------------->\nToplist:\n\n");
     for (int i = 0; i < options_len; i++) {
       if (i == selected) {
         color_printf("> ", 30, USER);
@@ -166,7 +166,7 @@ void toplist_menu() {
 
       qsort(toplist, toplist_len, sizeof(Record), compare_records);
 
-      printf("\nTOP 10 %s records:\n", options[selected]);
+      printf("<---------------->\nTOP 10 %s records:\n", options[selected]);
 
       if (toplist_len == 0) {
         printf("No records yet!\n");

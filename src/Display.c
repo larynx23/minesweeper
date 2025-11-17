@@ -48,7 +48,7 @@ void color_printf(char* text, int color1, int color2) {
 }
 
 void print_controls(void) {
-  printf("<------>\nControls:\n");
+  printf("<---------------->\nControls:\n");
   printf("  Arrow keys  : Move cursor\n");
   printf("  1           : Reveal tile\n");
   printf("  2           : Toggle flag\n");
