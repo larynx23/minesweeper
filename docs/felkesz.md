@@ -16,7 +16,7 @@
 mkdir -p bin
 mkdir -p obj
 # One-liner (összes forrás fájl fordítása egyszerre)
-gcc -Wall -Wextra -I include src/main.c src/Board.c src/Tile.c src/Menu.c src/Display.c src/Timer.c -o bin/minesweeper.exe
+gcc -Wall -Wextra -I include src/main.c src/Board.c src/Tile.c src/Menu.c src/Display.c src/File.c -o bin/minesweeper.exe
 
 # Make-vel (ha telepítve van)
 make run

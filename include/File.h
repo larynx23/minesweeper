@@ -12,5 +12,8 @@ typedef struct {
 Record* read_file_to_toplist(char* filename, Difficulty difficulty, int* count);
 void append_toplist(char* filename, Record record);
 int compare_records(const void* record1, const void* record2);
+#ifdef _WIN32
+size_t getline(char** lineptr, size_t* n, FILE* stream);
+#endif
 
 #endif
